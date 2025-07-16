@@ -47,7 +47,7 @@
       width: 400px;
       height: 6px;
       background: rgba(0, 255, 204, 0.2);
-      border-radius: 3px;
+      border-radius: 10px;  /* More circular */
       overflow: hidden;
       margin-top: 20px;
     }
@@ -119,13 +119,12 @@
       pointer-events: auto;
     }
 
-    .system-status {
-      background: rgba(0, 20, 40, 0.8);
-      border: 1px solid #00ffcc;
-      border-radius: 10px;
-      padding: 15px 25px;  /* Reduced padding */
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+    /* System Status and Time Display */
+    .system-status, .time-display {
+      background: rgba(0, 20, 40, 0.6);
+      border: 1px solid rgba(0, 255, 204, 0.7);
+      border-radius: 25px;  /* More circular */
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
     }
 
     .status-item {
@@ -133,6 +132,7 @@
       justify-content: space-between;
       margin: 6px 0;  /* Reduced from 8px */
       font-size: 0.85rem;  /* Reduced from 0.9rem */
+      padding: 0 15px;  /* Added padding on both sides */
     }
 
     .status-item span {
@@ -145,13 +145,8 @@
     }
 
     .time-display {
-      background: rgba(0, 20, 40, 0.8);
-      border: 1px solid #00ffcc;
-      border-radius: 10px;
       padding: 15px 25px;
-      backdrop-filter: blur(10px);
       text-align: center;
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
     }
 
     .current-time {
@@ -170,83 +165,33 @@
     /* Bottom HUD */
     .bottom-hud {
       position: absolute;
-      bottom: 50px;  /* Increased from 30px */
+      bottom: 50px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      gap: 30px;  /* Increased from 20px */
       pointer-events: auto;
-    }
-
-    .control-panel {
-      background: rgba(0, 20, 40, 0.8);
-      border: 1px solid #00ffcc;
-      border-radius: 15px;
-      padding: 25px;  /* Increased from 20px */
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
-      display: flex;
-      gap: 20px;  /* Increased from 15px */
-    }
-
-    .hud-button {
-      background: rgba(0, 255, 204, 0.1);
-      color: #00ffcc;
-      border: 2px solid #00ffcc;
-      padding: 15px 25px;  /* Increased from 12px 20px */
-      font-size: 0.9rem;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      font-family: 'Orbitron', monospace;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hud-button:hover {
-      background: rgba(0, 255, 204, 0.3);
-      box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
-      transform: translateY(-2px);
-    }
-
-    .hud-button:active {
-      transform: translateY(0);
-    }
-
-    .hud-button::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s;
-    }
-
-    .hud-button:hover::before {
-      left: 100%;
     }
 
     /* Voice Control */
     .voice-control {
-      background: rgba(0, 20, 40, 0.8);
-      border: 1px solid #00ffcc;
-      border-radius: 25px;  /* Changed from 50% to fixed pixels */
-      width: 80px;  /* Added explicit width */
-      height: 45px;  /* Added height less than width to make it oval */
-      padding: 10px;  /* Reduced padding */
+      background: rgba(0, 20, 40, 0.6);
+      border: 1px solid rgba(0, 255, 204, 0.7);
+      border-radius: 25px;
+      width: 80px;
+      height: 45px;
+      padding: 10px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
       cursor: pointer;
       transition: all 0.3s ease;
-      position: relative;
-      display: flex;  /* Added to center the mic icon */
+      display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .voice-control:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+      background: rgba(0, 20, 40, 0.8);
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.4);
     }
 
     .voice-control.listening {
@@ -268,12 +213,12 @@
     .side-panel {
       position: absolute;
       width: 250px;
-      background: rgba(0, 20, 40, 0.8);
-      border: 1px solid #00ffcc;
-      border-radius: 15px;
+      background: rgba(0, 20, 40, 0.6);
+      border: 1px solid rgba(0, 255, 204, 0.7);
+      border-radius: 25px;  /* More circular */
       padding: 20px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
       pointer-events: auto;
     }
 
@@ -304,11 +249,11 @@
     }
 
     .command-item {
-      padding: 8px 12px;  /* Reduced from 10px 15px */
-      margin: 6px 0;  /* Reduced from 8px */
+      padding: 8px 12px;
+      margin: 6px 0;
       background: rgba(0, 255, 204, 0.1);
-      border-radius: 5px;
-      font-size: 0.75rem;  /* Reduced from 0.8rem */
+      border-radius: 15px;  /* More circular */
+      font-size: 0.75rem;
       border-left: 3px solid #00ffcc;
     }
 
@@ -330,20 +275,19 @@
       margin-top: 5px;
     }
 
-    /* Voice Response Display */
+    /* Voice Response */
     .voice-response {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(0, 20, 40, 0.9);
-      border: 2px solid #00ffcc;
-      border-radius: 15px;
+      background: rgba(0, 20, 40, 0.6);
+      border: 2px solid rgba(0, 255, 204, 0.7);
+      border-radius: 30px;  /* More circular */
       padding: 30px;
       max-width: 600px;
       text-align: center;
       backdrop-filter: blur(10px);
-      box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s ease;
@@ -385,16 +329,11 @@
       100% { top: 100%; }
     }
 
-    /* Camera Switch Button */
+    /* Camera Switch */
     .camera-switch {
-      background: rgba(0, 20, 40, 0.8);
-      border: 1px solid #00ffcc;
-      border-radius: 25px;
-      width: 80px;
-      height: 45px;
-      padding: 10px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+      background: rgba(0, 20, 40, 0.6);
+      border: 1px solid rgba(0, 255, 204, 0.7);
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
       cursor: pointer;
       transition: all 0.3s ease;
       position: absolute;
@@ -409,7 +348,7 @@
 
     .camera-switch:hover {
       transform: scale(1.1);
-      box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.4);
     }
 
     .camera-icon {
@@ -449,34 +388,6 @@
         transform-origin: right center;
       }
 
-      .control-panel {
-        transform: scale(0.5);
-        transform-origin: center bottom;
-        margin-bottom: -25%;  /* Compensate for scale reduction */
-        flex-direction: column;
-        gap: 8px;  /* Reduced from 15px */
-      }
-
-      .hud-button {
-        padding: 6px 10px;  /* Reduced from 12px 20px */
-        font-size: 0.7rem;  /* Reduced from 0.8rem */
-        white-space: nowrap;
-      }
-
-      .startup-text {
-        font-size: 1.5rem;  /* Reduced from 2rem */
-      }
-
-      .loading-bar {
-        width: 150px;  /* Reduced from 300px */
-      }
-
-      .command-item {
-        padding: 3px 5px;  /* Reduced from 6px 10px */
-        margin: 2px 0;  /* Reduced from 4px */
-        font-size: 0.6rem;  /* Reduced from 0.7rem */
-      }
-
       .voice-control {
         transform: scale(0.5);
         transform-origin: center center;
@@ -491,8 +402,7 @@
 
       /* Voice response adjustments */
       .voice-response {
-        transform: scale(0.5);
-        transform-origin: center center;
+        transform: translate(-50%, -50%) scale(0.5);
         padding: 15px;
         max-width: 300px;
       }
@@ -579,22 +489,9 @@
       /* Center controls */
       .bottom-hud {
         bottom: 15px;
-        width: calc(100% - 400px);  /* Give space for side panels */
+        width: auto;  /* Remove fixed width */
         left: 50%;
         transform: translateX(-50%);
-      }
-
-      .control-panel {
-        flex-direction: row;
-        padding: 12px;
-        gap: 10px;
-        justify-content: center;
-      }
-
-      .hud-button {
-        padding: 6px 12px;
-        font-size: 0.7rem;
-        min-width: 100px;  /* Ensure minimum width */
       }
 
       .voice-control {
@@ -623,6 +520,7 @@
 
       /* Voice response adjustments */
       .voice-response {
+        transform: translate(-50%, -50%);
         padding: 15px;
         max-width: 350px;
         top: 45%;
@@ -723,14 +621,14 @@
       <div class="side-panel left-panel">
         <div class="panel-title">Voice Commands</div>
         <ul class="command-list">
-          <li class="command-item">"Toggle camera"</li>
-          <li class="command-item">"System status"</li>
-          <li class="command-item">"Check weather"</li>
+          <li class="command-item">"System Diagnostics"</li>
+          <li class="command-item">"Weather Update"</li>
+          <li class="command-item">"Camera Toggle"</li>
+          <li class="command-item">"Environment Scan"</li>
           <li class="command-item">"What time is it"</li>
-          <li class="command-item">"Run diagnostics"</li>
           <li class="command-item">"Activate protocol"</li>
-          <li class="command-item">"Scan environment"</li>
           <li class="command-item">"Power status"</li>
+          <li class="command-item">"Switch camera"</li>
         </ul>
       </div>
       
@@ -759,13 +657,6 @@
       
       <!-- Bottom HUD -->
       <div class="bottom-hud">
-        <div class="control-panel">
-          <button class="hud-button" onclick="runDiagnostics()">System Diagnostics</button>
-          <button class="hud-button" onclick="checkWeather()">Weather Update</button>
-          <button class="hud-button" onclick="toggleCamera()">Camera Toggle</button>
-          <button class="hud-button" onclick="scanEnvironment()">Environment Scan</button>
-        </div>
-        
         <div class="voice-control" id="voice-control" onclick="toggleVoiceControl()">
           <div class="mic-icon">🎤</div>
         </div>
