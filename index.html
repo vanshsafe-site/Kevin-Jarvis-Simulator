@@ -366,43 +366,54 @@
       }
 
       .system-status, .time-display {
-        transform: scale(0.5);  /* Make 50% smaller */
+        transform: scale(0.6);  /* Changed from 0.5 to make 10% larger */
         transform-origin: top center;
-        margin: -25% 0;  /* Compensate for scale reduction */
+        margin: -20% 0;  /* Adjusted margin to compensate for new scale */
+      }
+
+      .status-item {
+        padding: 0 10px;  /* Reduced padding for mobile */
+        font-size: 0.8rem;  /* Slightly smaller font to prevent overflow */
+        white-space: nowrap;  /* Prevent text wrapping */
+        overflow: hidden;  /* Hide overflow */
+      }
+
+      .status-item span {
+        margin-right: 10px;  /* Reduced margin */
       }
 
       .side-panel {
-        width: 100px;  /* Reduced from 200px */
-        padding: 8px;  /* Reduced from 15px */
-        transform: scale(0.5);
+        width: 110px;  /* Increased from 100px for 10% larger */
+        padding: 8px;
+        transform: scale(0.6);  /* Changed from 0.5 to make 10% larger */
         transform-origin: left center;
       }
 
       .left-panel {
-        left: 10px;  /* Reduced from 20px */
-        bottom: 60px;  /* Reduced from 120px */
+        left: 10px;
+        bottom: 60px;
       }
 
       .right-panel {
-        right: 10px;  /* Reduced from 20px */
+        right: 10px;
         transform-origin: right center;
       }
 
       .voice-control {
-        transform: scale(0.5);
+        transform: scale(0.6);  /* Changed from 0.5 to make 10% larger */
         transform-origin: center center;
       }
 
       .camera-switch {
-        transform: scale(0.5);
+        transform: scale(0.6);  /* Changed from 0.5 to make 10% larger */
         transform-origin: top right;
-        right: 30px;  /* Adjusted position */
-        top: 12px;  /* Adjusted position */
+        right: 30px;
+        top: 12px;
       }
 
       /* Voice response adjustments */
       .voice-response {
-        transform: translate(-50%, -50%) scale(0.5);
+        transform: translate(-50%, -50%) scale(0.6);  /* Changed from 0.5 to make 10% larger */
         padding: 15px;
         max-width: 300px;
       }
