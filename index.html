@@ -884,10 +884,6 @@
           <li class="command-item">"Activate protocol"</li>
           <li class="command-item">"Power status"</li>
           <li class="command-item">"Switch camera"</li>
-          <li class="command-item">"Take photo"</li>
-          <li class="command-item">"Search this"</li>
-          <li class="command-item">"Capture image"</li>
-          <li class="command-item">"Image search"</li>
         </ul>
       </div>
       
@@ -1110,20 +1106,22 @@
     // Voice command processing
     function processVoiceCommand(command) {
       showVoiceResponse("Processing command...", `"${command}"`);
+      command = command.toLowerCase().trim();
+      console.log("Processing command:", command); // Debug log
       
-      if (command.includes("camera toggle") || command.includes("camera")) {
-        if (command.includes("switch") || command.includes("flip")) {
-          switchCamera();
-        } else if (command.includes("take") || command.includes("capture") || command.includes("photo")) {
-          takePhoto();
-          speak("Photo captured.");
-        } else if (command.includes("search") || command.includes("image search")) {
-          searchImage();
-          speak("Opening image search.");
-        } else {
-          toggleCamera();
-        }
-      } else if (command.includes("system status") || command.includes("status")) {
+      // Camera commands
+      if (command.includes("switch camera") || command.includes("flip camera")) {
+        switchCamera();
+        return;
+      }
+      
+      if (command.includes("camera toggle") || command === "camera") {
+        toggleCamera();
+        return;
+      }
+      
+      // Other commands
+      if (command.includes("system status") || command.includes("status")) {
         runDiagnostics();
       } else if (command.includes("weather") || command.includes("temperature")) {
         checkWeather();
@@ -1142,6 +1140,7 @@
       } else if (command.includes("hello") || command.includes("hi")) {
         speak("Hello sir. K.E.V.I.N. at your service. How may I assist you?");
       } else {
+        console.log("Command not recognized:", command); // Debug log
         speak("Command not recognized. Please refer to the command list or try again.");
       }
     }
