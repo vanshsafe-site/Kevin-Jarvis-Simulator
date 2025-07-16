@@ -16,8 +16,8 @@
       background-color: #000;
       font-family: 'Orbitron', monospace;
       color: #00ffcc;
-      overflow: hidden;
-      height: 100vh;
+      min-height: 100vh;
+      position: relative;
     }
 
     /* Startup Screen */
@@ -77,12 +77,14 @@
     /* Main UI */
     #main-ui {
       position: relative;
-      height: 100vh;
+      min-height: 100vh;
       width: 100vw;
       display: flex;
       opacity: 0;
       animation: fadeIn 1s ease forwards;
       animation-delay: 5s;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     @keyframes fadeIn {
@@ -90,21 +92,22 @@
     }
 
     #camera {
+      position: fixed;
+      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
-      position: absolute;
-      top: 0; left: 0;
       z-index: -1;
     }
 
     /* HUD Overlay */
     .hud-overlay {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
       pointer-events: none;
       z-index: 1;
+      padding-bottom: 100px; /* Add padding at bottom to prevent content from being cut off */
     }
 
     /* Top HUD */
@@ -277,7 +280,7 @@
 
     /* Voice Response */
     .voice-response {
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -314,7 +317,7 @@
 
     /* Scanning Effect */
     .scan-line {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
@@ -322,6 +325,7 @@
       background: linear-gradient(90deg, transparent, #00ffcc, transparent);
       animation: scan 3s linear infinite;
       opacity: 0.7;
+      z-index: 2;
     }
 
     @keyframes scan {
@@ -363,35 +367,58 @@
         flex-direction: column;
         gap: 8px;
         align-items: center;
-        margin-top: 70px;  /* Increased from 30px to 70px */
+        margin-top: 100px; /* Increased margin to prevent overlap */
         position: relative;
+      }
+
+      .hud-overlay {
+        padding-bottom: 150px; /* Increased padding for mobile */
+      }
+
+      .side-panel {
+        position: relative; /* Change from absolute to relative */
+        margin: 20px auto; /* Add margin for spacing */
+        transform-origin: center;
+      }
+
+      .left-panel {
+        left: auto;
+        bottom: auto;
+        margin-left: 10px;
+      }
+
+      .right-panel {
+        right: auto;
+        margin-right: 10px;
+      }
+
+      /* Keep the voice control fixed at the bottom */
+      .bottom-hud {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+      }
+
+      /* Ensure camera switch stays fixed */
+      .camera-switch {
+        position: fixed;
+        right: 30px;
+        top: 12px;
+        z-index: 100;
       }
 
       .system-status {
         width: calc(100% + 20px);
         margin-right: -20px;
         position: relative;
-        top: 40px;  /* Increased from 30px to 40px */
+        top: 40px;
       }
 
       .time-display {
         position: relative;
-        top: 40px;  /* Increased from 30px to 40px */
-      }
-
-      /* Adjust camera switch to prevent overlap */
-      .camera-switch {
-        transform: scale(0.6);
-        transform-origin: top right;
-        right: 30px;
-        top: 52px;  /* Increased to prevent overlap with top elements */
-      }
-
-      /* Move right panel down to prevent overlap */
-      .right-panel {
-        right: 10px;
-        transform-origin: right center;
-        top: calc(45% + 40px);  /* Adjusted to account for top elements */
+        top: 40px;
       }
 
       .system-status, .time-display {
@@ -499,9 +526,8 @@
       .top-hud {
         flex-direction: row;
         justify-content: space-between;
-        padding: 0 200px;  /* Increased padding to move elements inward */
-        top: 10px;  /* Moved slightly higher */
-        gap: 20px;
+        padding: 60px 20px 20px;
+        position: relative;
       }
 
       .system-status {
@@ -531,7 +557,8 @@
       .side-panel {
         width: 160px;  /* Narrower */
         padding: 10px;
-        height: calc(100vh - 140px);  /* Set specific height */
+        height: auto;
+        min-height: 300px;
         display: flex;
         flex-direction: column;
         top: 50px;  /* Position below top HUD */
@@ -634,6 +661,13 @@
 
       .camera-icon {
         font-size: 1rem;
+      }
+
+      /* Clear floats */
+      .hud-overlay::after {
+        content: '';
+        display: table;
+        clear: both;
       }
     }
 
