@@ -214,7 +214,7 @@
 
     /* Side Panels */
     .side-panel {
-      position: absolute;
+      position: fixed;
       width: 250px;
       background: rgba(0, 20, 40, 0.6);
       border: 1px solid rgba(0, 255, 204, 0.7);
@@ -227,14 +227,14 @@
 
     .left-panel {
       left: 60px;
-      bottom: 50px;  /* Position at bottom */
-      transform: none;  /* Remove vertical centering */
+      top: 150px; /* Position at same height as environment panel */
+      transform: none;
     }
 
     .right-panel {
       right: 60px;
-      top: 45%;
-      transform: translateY(-50%);
+      top: 150px;
+      transform: none;
     }
 
     .panel-title {
@@ -249,13 +249,31 @@
     .command-list {
       list-style: none;
       padding: 0;
+      max-height: calc(100vh - 250px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 255, 204, 0.5) rgba(0, 20, 40, 0.6);
+    }
+
+    .command-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .command-list::-webkit-scrollbar-track {
+      background: rgba(0, 20, 40, 0.6);
+      border-radius: 3px;
+    }
+
+    .command-list::-webkit-scrollbar-thumb {
+      background: rgba(0, 255, 204, 0.5);
+      border-radius: 3px;
     }
 
     .command-item {
       padding: 8px 12px;
       margin: 6px 0;
       background: rgba(0, 255, 204, 0.1);
-      border-radius: 15px;  /* More circular */
+      border-radius: 15px;
       font-size: 0.75rem;
       border-left: 3px solid #00ffcc;
     }
@@ -367,7 +385,7 @@
         flex-direction: column;
         gap: 8px;
         align-items: center;
-        margin-top: 100px; /* Increased margin to prevent overlap */
+        margin-top: 100px;
         position: relative;
       }
 
@@ -521,6 +539,45 @@
       }
     }
 
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .top-hud {
+        padding: 0 10px;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+        margin-top: 100px;
+        position: relative;
+      }
+
+      .system-status, .time-display {
+        transform: scale(0.6);
+        transform-origin: top center;
+        margin-top: -20%;
+        margin-bottom: -20%;
+      }
+
+      .left-panel {
+        position: fixed;
+        left: 10px;
+        top: 280px; /* Position below clock */
+        transform: scale(0.6);
+        transform-origin: top left;
+        margin: 0;
+        width: 200px;
+      }
+
+      .right-panel {
+        position: fixed;
+        right: 10px;
+        top: 280px;
+        transform: scale(0.6);
+        transform-origin: top right;
+        margin: 0;
+        width: 200px;
+      }
+    }
+
     /* Landscape Mode */
     @media (max-width: 900px) and (orientation: landscape) {
       .top-hud {
@@ -668,6 +725,25 @@
         content: '';
         display: table;
         clear: both;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 900px) and (orientation: landscape) {
+      .right-panel {
+        position: fixed;
+        right: 20px;
+        top: 160px; /* Adjusted to be closer to clock in landscape */
+        transform: scale(0.8);
+        width: 180px;
+      }
+
+      .left-panel {
+        position: relative;
+        left: 20px;
+        margin: 20px;
+        transform: scale(0.8);
+        width: 180px;
       }
     }
 
