@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>K.E.V.I.N. - Advanced J.A.R.V.I.S. Web AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      background-color: #000;
+      font-family: 'Orbitron', monospace;
+      color: #00ffcc;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* Startup Screen */
+    #startup-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle, #001122 0%, #000 70%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      animation: fadeOut 1s ease forwards;
+      animation-delay: 4s;
+    }
+
+    .startup-text {
+      font-size: 3rem;
+      font-weight: 900;
+      text-shadow: 0 0 20px #00ffcc;
+      margin-bottom: 30px;
+      animation: pulse 2s infinite;
+    }
+
+    .loading-bar {
+      width: 400px;
+      height: 6px;
+      background: rgba(0, 255, 204, 0.2);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .loading-progress {
+      height: 100%;
+      background: linear-gradient(90deg, #00ffcc, #0088ff);
+      width: 0%;
+      animation: loading 4s ease-in-out forwards;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+
+    @keyframes loading {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    /* Main UI */
+    #main-ui {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: 5s;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    #camera {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+      z-index: -1;
+    }
+
+    /* HUD Overlay */
+    .hud-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Top HUD */
+    .top-hud {
+      position: absolute;
+      top: 25px;  /* Reduced from 40px */
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 60px;
+      pointer-events: auto;
+    }
+
+    .system-status {
+      background: rgba(0, 20, 40, 0.8);
+      border: 1px solid #00ffcc;
+      border-radius: 10px;
+      padding: 15px 25px;  /* Reduced padding */
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+    }
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;  /* Reduced from 8px */
+      font-size: 0.85rem;  /* Reduced from 0.9rem */
+    }
+
+    .status-item span {
+      margin-right: 15px;  /* Reduced from 20px */
+    }
+
+    .status-value {
+      color: #00ff88;
+      font-weight: 700;
+    }
+
+    .time-display {
+      background: rgba(0, 20, 40, 0.8);
+      border: 1px solid #00ffcc;
+      border-radius: 10px;
+      padding: 15px 25px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+    }
+
+    .current-time {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+    }
+
+    .current-date {
+      font-size: 0.9rem;
+      color: #88ccff;
+      margin-top: 5px;
+    }
+
+    /* Bottom HUD */
+    .bottom-hud {
+      position: absolute;
+      bottom: 50px;  /* Increased from 30px */
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 30px;  /* Increased from 20px */
+      pointer-events: auto;
+    }
+
+    .control-panel {
+      background: rgba(0, 20, 40, 0.8);
+      border: 1px solid #00ffcc;
+      border-radius: 15px;
+      padding: 25px;  /* Increased from 20px */
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+      display: flex;
+      gap: 20px;  /* Increased from 15px */
+    }
+
+    .hud-button {
+      background: rgba(0, 255, 204, 0.1);
+      color: #00ffcc;
+      border: 2px solid #00ffcc;
+      padding: 15px 25px;  /* Increased from 12px 20px */
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-family: 'Orbitron', monospace;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hud-button:hover {
+      background: rgba(0, 255, 204, 0.3);
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .hud-button:active {
+      transform: translateY(0);
+    }
+
+    .hud-button::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .hud-button:hover::before {
+      left: 100%;
+    }
+
+    /* Voice Control */
+    .voice-control {
+      background: rgba(0, 20, 40, 0.8);
+      border: 1px solid #00ffcc;
+      border-radius: 25px;  /* Changed from 50% to fixed pixels */
+      width: 80px;  /* Added explicit width */
+      height: 45px;  /* Added height less than width to make it oval */
+      padding: 10px;  /* Reduced padding */
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;  /* Added to center the mic icon */
+      align-items: center;
+      justify-content: center;
+    }
+
+    .voice-control:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+    }
+
+    .voice-control.listening {
+      animation: voicePulse 1s infinite;
+      background: rgba(0, 255, 204, 0.3);
+    }
+
+    @keyframes voicePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }  /* Reduced scale effect to match oval shape */
+    }
+
+    .mic-icon {
+      font-size: 1.3rem;  /* Slightly reduced from 1.5rem */
+      color: #00ffcc;
+    }
+
+    /* Side Panels */
+    .side-panel {
+      position: absolute;
+      width: 250px;
+      background: rgba(0, 20, 40, 0.8);
+      border: 1px solid #00ffcc;
+      border-radius: 15px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+      pointer-events: auto;
+    }
+
+    .left-panel {
+      left: 60px;
+      bottom: 50px;  /* Position at bottom */
+      transform: none;  /* Remove vertical centering */
+    }
+
+    .right-panel {
+      right: 60px;
+      top: 45%;
+      transform: translateY(-50%);
+    }
+
+    .panel-title {
+      font-size: 1.1rem;  /* Reduced from 1.2rem */
+      font-weight: 700;
+      margin-bottom: 12px;  /* Reduced from 15px */
+      text-align: center;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+    }
+
+    .command-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .command-item {
+      padding: 8px 12px;  /* Reduced from 10px 15px */
+      margin: 6px 0;  /* Reduced from 8px */
+      background: rgba(0, 255, 204, 0.1);
+      border-radius: 5px;
+      font-size: 0.75rem;  /* Reduced from 0.8rem */
+      border-left: 3px solid #00ffcc;
+    }
+
+    .weather-info {
+      text-align: center;
+      padding: 10px;
+    }
+
+    .weather-temp {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+    }
+
+    .weather-desc {
+      font-size: 0.9rem;
+      color: #88ccff;
+      margin-top: 5px;
+    }
+
+    /* Voice Response Display */
+    .voice-response {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 20, 40, 0.9);
+      border: 2px solid #00ffcc;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 600px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .voice-response.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .response-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+      margin-bottom: 15px;
+    }
+
+    .response-command {
+      font-size: 0.9rem;
+      color: #88ccff;
+    }
+
+    /* Scanning Effect */
+    .scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00ffcc, transparent);
+      animation: scan 3s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes scan {
+      0% { top: 0; }
+      100% { top: 100%; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .top-hud {
+        padding: 0 20px;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+      }
+
+      .side-panel {
+        width: 200px;
+        padding: 15px;
+      }
+
+      .left-panel {
+        left: 20px;
+        bottom: 120px;  /* Give more space from bottom on mobile */
+      }
+
+      .right-panel {
+        right: 20px;
+        top: 50%;
+      }
+
+      .control-panel {
+        flex-direction: column;
+        gap: 15px;  /* Increased from 10px */
+      }
+
+      .hud-button {
+        padding: 12px 20px;  /* Adjusted for mobile */
+        font-size: 0.8rem;
+      }
+
+      .startup-text {
+        font-size: 2rem;
+      }
+
+      .loading-bar {
+        width: 300px;
+      }
+
+      .command-item {
+        padding: 6px 10px;
+        margin: 4px 0;
+        font-size: 0.7rem;
+      }
+    }
+
+    /* Landscape Mode */
+    @media (max-width: 900px) and (orientation: landscape) {
+      .top-hud {
+        flex-direction: row;
+        padding: 0 30px;
+        top: 15px;
+      }
+
+      .system-status {
+        padding: 10px 20px;
+      }
+
+      .status-item {
+        margin: 4px 0;
+        font-size: 0.75rem;
+      }
+
+      .time-display {
+        padding: 10px 20px;
+      }
+
+      .current-time {
+        font-size: 1.4rem;
+      }
+
+      .current-date {
+        font-size: 0.8rem;
+      }
+
+      .side-panel {
+        width: 180px;
+        padding: 12px;
+      }
+
+      .left-panel {
+        left: 30px;
+        bottom: 20px;
+      }
+
+      .right-panel {
+        right: 30px;
+        top: auto;
+        bottom: 20px;
+        transform: none;
+      }
+
+      .panel-title {
+        font-size: 1rem;
+        margin-bottom: 8px;
+      }
+
+      .command-item {
+        padding: 5px 8px;
+        margin: 3px 0;
+        font-size: 0.7rem;
+      }
+
+      .bottom-hud {
+        bottom: 20px;
+      }
+
+      .control-panel {
+        flex-direction: row;
+        padding: 15px;
+        gap: 12px;
+      }
+
+      .hud-button {
+        padding: 8px 15px;
+        font-size: 0.75rem;
+      }
+
+      .voice-control {
+        width: 70px;
+        height: 35px;
+        padding: 8px;
+      }
+
+      .mic-icon {
+        font-size: 1.1rem;
+      }
+
+      /* Adjust voice response for landscape */
+      .voice-response {
+        padding: 20px;
+        max-width: 400px;
+      }
+
+      .response-text {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+
+      .response-command {
+        font-size: 0.8rem;
+      }
+
+      /* Adjust startup screen for landscape */
+      #startup-screen {
+        padding: 20px;
+      }
+
+      .startup-text {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+      }
+
+      .loading-bar {
+        width: 250px;
+        margin-top: 15px;
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Startup Screen -->
+  <div id="startup-screen">
+    <div class="startup-text">K.E.V.I.N.</div>
+    <div style="font-size: 1.2rem; color: #88ccff;">J.A.R.V.I.S. Web AI System</div>
+    <div class="loading-bar">
+      <div class="loading-progress"></div>
+    </div>
+    <div style="margin-top: 20px; font-size: 0.9rem; color: #66aacc;">Initializing systems...</div>
+  </div>
+
+  <!-- Main UI -->
+  <div id="main-ui">
+    <!-- Camera Feed -->
+    <video id="camera" autoplay playsinline muted></video>
+    
+    <!-- HUD Overlay -->
+    <div class="hud-overlay">
+      <div class="scan-line"></div>
+      
+      <!-- Top HUD -->
+      <div class="top-hud">
+        <div class="system-status">
+          <div class="status-item">
+            <span>CPU:</span>
+            <span class="status-value" id="cpu-usage">32%</span>
+          </div>
+          <div class="status-item">
+            <span>Memory:</span>
+            <span class="status-value" id="memory-usage">2.1GB</span>
+          </div>
+          <div class="status-item">
+            <span>Network:</span>
+            <span class="status-value" id="network-status">Online</span>
+          </div>
+          <div class="status-item">
+            <span>Power:</span>
+            <span class="status-value" id="power-level">100%</span>
+          </div>
+        </div>
+        
+        <div class="time-display">
+          <div class="current-time" id="current-time">00:00:00</div>
+          <div class="current-date" id="current-date">Loading...</div>
+        </div>
+      </div>
+      
+      <!-- Left Panel -->
+      <div class="side-panel left-panel">
+        <div class="panel-title">Voice Commands</div>
+        <ul class="command-list">
+          <li class="command-item">"Toggle camera"</li>
+          <li class="command-item">"System status"</li>
+          <li class="command-item">"Check weather"</li>
+          <li class="command-item">"What time is it"</li>
+          <li class="command-item">"Run diagnostics"</li>
+          <li class="command-item">"Activate protocol"</li>
+          <li class="command-item">"Scan environment"</li>
+          <li class="command-item">"Power status"</li>
+        </ul>
+      </div>
+      
+      <!-- Right Panel -->
+      <div class="side-panel right-panel">
+        <div class="panel-title">Environment</div>
+        <div class="weather-info">
+          <div class="weather-temp" id="weather-temp">22°C</div>
+          <div class="weather-desc" id="weather-desc">Clear Sky</div>
+        </div>
+        <div style="margin-top: 20px;">
+          <div class="status-item">
+            <span>Humidity:</span>
+            <span class="status-value">45%</span>
+          </div>
+          <div class="status-item">
+            <span>Air Quality:</span>
+            <span class="status-value">Good</span>
+          </div>
+          <div class="status-item">
+            <span>UV Index:</span>
+            <span class="status-value">Moderate</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Bottom HUD -->
+      <div class="bottom-hud">
+        <div class="control-panel">
+          <button class="hud-button" onclick="runDiagnostics()">System Diagnostics</button>
+          <button class="hud-button" onclick="checkWeather()">Weather Update</button>
+          <button class="hud-button" onclick="toggleCamera()">Camera Toggle</button>
+          <button class="hud-button" onclick="scanEnvironment()">Environment Scan</button>
+        </div>
+        
+        <div class="voice-control" id="voice-control" onclick="toggleVoiceControl()">
+          <div class="mic-icon">🎤</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Voice Response Display -->
+    <div class="voice-response" id="voice-response">
+      <div class="response-text" id="response-text">System Ready</div>
+      <div class="response-command" id="response-command">Awaiting commands...</div>
+    </div>
+  </div>
+
+  <script>
+    // Global variables
+    let camera = document.getElementById("camera");
+    let voiceControl = document.getElementById("voice-control");
+    let voiceResponse = document.getElementById("voice-response");
+    let cameraEnabled = true;
+    let isListening = false;
+    let recognition;
+    let currentStream;
+
+    // Initialize system on load
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        initializeSystem();
+      }, 5000);
+    });
+
+    // Initialize all systems
+    function initializeSystem() {
+      speak("K.E.V.I.N. systems online. All protocols activated.");
+      startCamera();
+      updateTime();
+      updateSystemStats();
+      initializeVoiceRecognition();
+      
+      // Update time every second
+      setInterval(updateTime, 1000);
+      
+      // Update system stats every 5 seconds
+      setInterval(updateSystemStats, 5000);
+    }
+
+    // Time and date functions
+    function updateTime() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('en-US', { 
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      const dateString = now.toLocaleDateString('en-US', { 
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      
+      document.getElementById('current-time').textContent = timeString;
+      document.getElementById('current-date').textContent = dateString;
+    }
+
+    // System stats simulation
+    function updateSystemStats() {
+      document.getElementById('cpu-usage').textContent = Math.floor(Math.random() * 40 + 20) + '%';
+      document.getElementById('memory-usage').textContent = (Math.random() * 2 + 1.5).toFixed(1) + 'GB';
+      document.getElementById('power-level').textContent = Math.floor(Math.random() * 20 + 80) + '%';
+    }
+
+    // Speech synthesis
+    function speak(text) {
+      const synth = window.speechSynthesis;
+      synth.cancel(); // Stop any current speech
+      
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9;
+      utterance.pitch = 1.1;
+      utterance.volume = 0.8;
+      
+      // Show response on screen
+      showVoiceResponse(text);
+      
+      synth.speak(utterance);
+    }
+
+    // Show voice response visual
+    function showVoiceResponse(text, command = '') {
+      document.getElementById('response-text').textContent = text;
+      document.getElementById('response-command').textContent = command;
+      voiceResponse.classList.add('active');
+      
+      setTimeout(() => {
+        voiceResponse.classList.remove('active');
+      }, 3000);
+    }
+
+    // Camera functions
+    function startCamera() {
+      navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        } 
+      })
+      .then(stream => {
+        camera.srcObject = stream;
+        currentStream = stream;
+        camera.style.display = "block";
+      })
+      .catch(err => {
+        console.error("Camera error:", err);
+        speak("Camera access denied or unavailable.");
+      });
+    }
+
+    function stopCamera() {
+      if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
+        camera.srcObject = null;
+        currentStream = null;
+      }
+    }
+
+    function toggleCamera() {
+      cameraEnabled = !cameraEnabled;
+      if (cameraEnabled) {
+        startCamera();
+        speak("Camera view activated. Visual sensors online.");
+      } else {
+        stopCamera();
+        camera.style.display = "none";
+        speak("Camera view deactivated. Switching to tactical display.");
+      }
+    }
+
+    // Voice recognition
+    function initializeVoiceRecognition() {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        console.warn("Speech recognition not supported");
+        return;
+      }
+      
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+      recognition.maxAlternatives = 1;
+      
+      recognition.onstart = () => {
+        isListening = true;
+        voiceControl.classList.add('listening');
+        showVoiceResponse("Listening...", "Speak your command");
+      };
+      
+      recognition.onend = () => {
+        isListening = false;
+        voiceControl.classList.remove('listening');
+      };
+      
+      recognition.onresult = (event) => {
+        const command = event.results[0][0].transcript.toLowerCase();
+        console.log("Voice command received:", command);
+        processVoiceCommand(command);
+      };
+      
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        speak("Voice recognition error. Please try again.");
+        isListening = false;
+        voiceControl.classList.remove('listening');
+      };
+    }
+
+    // Voice command processing
+    function processVoiceCommand(command) {
+      showVoiceResponse("Processing command...", `"${command}"`);
+      
+      if (command.includes("toggle camera") || command.includes("camera")) {
+        toggleCamera();
+      } else if (command.includes("system status") || command.includes("status")) {
+        runDiagnostics();
+      } else if (command.includes("weather") || command.includes("temperature")) {
+        checkWeather();
+      } else if (command.includes("time") || command.includes("what time")) {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US');
+        speak(`Current time is ${timeString}`);
+      } else if (command.includes("diagnostics") || command.includes("diagnostic")) {
+        runDiagnostics();
+      } else if (command.includes("scan environment") || command.includes("environment")) {
+        scanEnvironment();
+      } else if (command.includes("power") || command.includes("battery")) {
+        speak("Power systems at optimal levels. All reactors functioning normally.");
+      } else if (command.includes("protocol") || command.includes("activate")) {
+        speak("Security protocols activated. All systems armed and ready.");
+      } else if (command.includes("hello") || command.includes("hi")) {
+        speak("Hello sir. K.E.V.I.N. at your service. How may I assist you?");
+      } else {
+        speak("Command not recognized. Please refer to the command list or try again.");
+      }
+    }
+
+    // Voice control toggle
+    function toggleVoiceControl() {
+      if (!recognition) {
+        speak("Voice recognition not available in this browser.");
+        return;
+      }
+      
+      if (isListening) {
+        recognition.stop();
+      } else {
+        recognition.start();
+      }
+    }
+
+    // System functions
+    function runDiagnostics() {
+      speak("Running full system diagnostics. All systems operational. CPU at optimal levels, memory stable, network connections secure.");
+      
+      // Animate system stats
+      setTimeout(() => {
+        updateSystemStats();
+      }, 1000);
+    }
+
+    function checkWeather() {
+      speak("Weather systems online. Current temperature 22 degrees Celsius. Conditions are clear with good visibility.");
+      
+      // Simulate weather update
+      const temps = [18, 20, 22, 24, 26];
+      const conditions = ["Clear Sky", "Partly Cloudy", "Sunny", "Overcast"];
+      
+      document.getElementById('weather-temp').textContent = temps[Math.floor(Math.random() * temps.length)] + '°C';
+      document.getElementById('weather-desc').textContent = conditions[Math.floor(Math.random() * conditions.length)];
+    }
+
+    function scanEnvironment() {
+      speak("Initiating environmental scan. Analyzing atmospheric conditions, electromagnetic signatures, and thermal patterns.");
+      
+      // Add scanning effect
+      const scanEffect = document.createElement('div');
+      scanEffect.style.cssText = `
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: linear-gradient(0deg, transparent 0%, rgba(0,255,204,0.1) 50%, transparent 100%);
+        animation: scanEffect 2s ease-in-out;
+        pointer-events: none;
+        z-index: 50;
+      `;
+      
+      document.body.appendChild(scanEffect);
+      
+      setTimeout(() => {
+        scanEffect.remove();
+        speak("Environmental scan complete. No threats detected. All parameters within normal range.");
+      }, 2000);
+    }
+
+    // Add scanning animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes scanEffect {
+        0% { transform: translateY(-100%); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: translateY(100%); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey) {
+        switch(e.key) {
+          case 'c':
+            e.preventDefault();
+            toggleCamera();
+            break;
+          case 's':
+            e.preventDefault();
+            runDiagnostics();
+            break;
+          case 'w':
+            e.preventDefault();
+            checkWeather();
+            break;
+          case ' ':
+            e.preventDefault();
+            toggleVoiceControl();
+            break;
+        }
+      }
+    });
+
+    // Prevent context menu
+    document.addEventListener('contextmenu', e => e.preventDefault());
+  </script>
+</body>
+</html>
