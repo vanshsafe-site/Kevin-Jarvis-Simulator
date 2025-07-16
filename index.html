@@ -1111,11 +1111,15 @@
     function processVoiceCommand(command) {
       showVoiceResponse("Processing command...", `"${command}"`);
       
-      if (command.includes("toggle camera") || command.includes("camera")) {
+      if (command.includes("camera toggle") || command.includes("camera")) {
         if (command.includes("switch") || command.includes("flip")) {
           switchCamera();
         } else if (command.includes("take") || command.includes("capture") || command.includes("photo")) {
           takePhoto();
+          speak("Photo captured.");
+        } else if (command.includes("search") || command.includes("image search")) {
+          searchImage();
+          speak("Opening image search.");
         } else {
           toggleCamera();
         }
@@ -1137,8 +1141,6 @@
         speak("Security protocols activated. All systems armed and ready.");
       } else if (command.includes("hello") || command.includes("hi")) {
         speak("Hello sir. K.E.V.I.N. at your service. How may I assist you?");
-      } else if (command.includes("search this") || command.includes("image search")) {
-        searchImage();
       } else {
         speak("Command not recognized. Please refer to the command list or try again.");
       }
@@ -1241,26 +1243,10 @@
       }, 'image/png');
     }
 
-    async function searchImage() {
-      const canvas = document.getElementById('photo-canvas');
-      const video = document.getElementById('camera');
-      
-      // Set canvas size to match video dimensions
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      
-      // Draw current video frame to canvas
-      const context = canvas.getContext('2d');
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      
-      // Convert canvas to base64
-      const imageData = canvas.toDataURL('image/jpeg', 0.8);
-      
-      // Open Google Lens in a new tab
-      const googleLensUrl = 'https://lens.google.com/uploadbyurl?url=' + encodeURIComponent(imageData);
-      window.open(googleLensUrl, '_blank');
-      
-      speak("Opening image search in Google Lens.");
+    function searchImage() {
+      // Redirect to Google Lens
+      window.open('https://lens.google.com/', '_blank');
+      speak("Opening Google Lens for image search.");
     }
 
     // Keyboard shortcuts
