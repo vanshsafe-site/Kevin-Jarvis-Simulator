@@ -385,52 +385,125 @@
       100% { top: 100%; }
     }
 
+    /* Camera Switch Button */
+    .camera-switch {
+      background: rgba(0, 20, 40, 0.8);
+      border: 1px solid #00ffcc;
+      border-radius: 25px;
+      width: 80px;
+      height: 45px;
+      padding: 10px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: absolute;
+      right: 60px;
+      top: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      z-index: 10;
+    }
+
+    .camera-switch:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+    }
+
+    .camera-icon {
+      font-size: 1.3rem;
+      color: #00ffcc;
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .top-hud {
-        padding: 0 20px;
+        padding: 0 10px;  /* Reduced from 20px */
         flex-direction: column;
-        gap: 15px;
+        gap: 8px;  /* Reduced from 15px */
         align-items: center;
       }
 
+      .system-status, .time-display {
+        transform: scale(0.5);  /* Make 50% smaller */
+        transform-origin: top center;
+        margin: -25% 0;  /* Compensate for scale reduction */
+      }
+
       .side-panel {
-        width: 200px;
-        padding: 15px;
+        width: 100px;  /* Reduced from 200px */
+        padding: 8px;  /* Reduced from 15px */
+        transform: scale(0.5);
+        transform-origin: left center;
       }
 
       .left-panel {
-        left: 20px;
-        bottom: 120px;  /* Give more space from bottom on mobile */
+        left: 10px;  /* Reduced from 20px */
+        bottom: 60px;  /* Reduced from 120px */
       }
 
       .right-panel {
-        right: 20px;
-        top: 50%;
+        right: 10px;  /* Reduced from 20px */
+        transform-origin: right center;
       }
 
       .control-panel {
+        transform: scale(0.5);
+        transform-origin: center bottom;
+        margin-bottom: -25%;  /* Compensate for scale reduction */
         flex-direction: column;
-        gap: 15px;  /* Increased from 10px */
+        gap: 8px;  /* Reduced from 15px */
       }
 
       .hud-button {
-        padding: 12px 20px;  /* Adjusted for mobile */
-        font-size: 0.8rem;
+        padding: 6px 10px;  /* Reduced from 12px 20px */
+        font-size: 0.7rem;  /* Reduced from 0.8rem */
+        white-space: nowrap;
       }
 
       .startup-text {
-        font-size: 2rem;
+        font-size: 1.5rem;  /* Reduced from 2rem */
       }
 
       .loading-bar {
-        width: 300px;
+        width: 150px;  /* Reduced from 300px */
       }
 
       .command-item {
-        padding: 6px 10px;
-        margin: 4px 0;
-        font-size: 0.7rem;
+        padding: 3px 5px;  /* Reduced from 6px 10px */
+        margin: 2px 0;  /* Reduced from 4px */
+        font-size: 0.6rem;  /* Reduced from 0.7rem */
+      }
+
+      .voice-control {
+        transform: scale(0.5);
+        transform-origin: center center;
+      }
+
+      .camera-switch {
+        transform: scale(0.5);
+        transform-origin: top right;
+        right: 30px;  /* Adjusted position */
+        top: 12px;  /* Adjusted position */
+      }
+
+      /* Voice response adjustments */
+      .voice-response {
+        transform: scale(0.5);
+        transform-origin: center center;
+        padding: 15px;
+        max-width: 300px;
+      }
+
+      .response-text {
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+      }
+
+      .response-command {
+        font-size: 0.6rem;
       }
     }
 
@@ -438,112 +511,154 @@
     @media (max-width: 900px) and (orientation: landscape) {
       .top-hud {
         flex-direction: row;
-        padding: 0 30px;
-        top: 15px;
+        justify-content: space-between;
+        padding: 0 200px;  /* Increased padding to move elements inward */
+        top: 10px;  /* Moved slightly higher */
+        gap: 20px;
       }
 
       .system-status {
-        padding: 10px 20px;
+        padding: 8px 15px;
+        max-width: 300px;  /* Limit width */
       }
 
       .status-item {
-        margin: 4px 0;
-        font-size: 0.75rem;
+        margin: 3px 0;
+        font-size: 0.7rem;  /* Slightly smaller */
       }
 
       .time-display {
-        padding: 10px 20px;
+        padding: 8px 15px;
       }
 
       .current-time {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
       }
 
       .current-date {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
+        margin-top: 2px;
       }
 
+      /* Adjust side panels to be on far edges */
       .side-panel {
-        width: 180px;
-        padding: 12px;
+        width: 160px;  /* Narrower */
+        padding: 10px;
+        height: calc(100vh - 140px);  /* Set specific height */
+        display: flex;
+        flex-direction: column;
+        top: 50px;  /* Position below top HUD */
+        bottom: auto;  /* Reset bottom positioning */
+        transform: none;  /* Remove transform */
       }
 
       .left-panel {
-        left: 30px;
-        bottom: 20px;
+        left: 10px;
       }
 
       .right-panel {
-        right: 30px;
-        top: auto;
-        bottom: 20px;
-        transform: none;
+        right: 10px;
       }
 
       .panel-title {
-        font-size: 1rem;
-        margin-bottom: 8px;
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+      }
+
+      .command-list {
+        overflow-y: auto;  /* Make scrollable */
+        flex-grow: 1;  /* Take remaining space */
       }
 
       .command-item {
-        padding: 5px 8px;
-        margin: 3px 0;
-        font-size: 0.7rem;
+        padding: 4px 8px;
+        margin: 2px 0;
+        font-size: 0.65rem;
       }
 
+      /* Center controls */
       .bottom-hud {
-        bottom: 20px;
+        bottom: 15px;
+        width: calc(100% - 400px);  /* Give space for side panels */
+        left: 50%;
+        transform: translateX(-50%);
       }
 
       .control-panel {
         flex-direction: row;
-        padding: 15px;
-        gap: 12px;
+        padding: 12px;
+        gap: 10px;
+        justify-content: center;
       }
 
       .hud-button {
-        padding: 8px 15px;
-        font-size: 0.75rem;
+        padding: 6px 12px;
+        font-size: 0.7rem;
+        min-width: 100px;  /* Ensure minimum width */
       }
 
       .voice-control {
-        width: 70px;
-        height: 35px;
-        padding: 8px;
+        width: 60px;
+        height: 30px;
+        padding: 6px;
       }
 
       .mic-icon {
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
 
-      /* Adjust voice response for landscape */
+      /* Weather info adjustments */
+      .weather-info {
+        padding: 5px;
+      }
+
+      .weather-temp {
+        font-size: 1.6rem;
+      }
+
+      .weather-desc {
+        font-size: 0.7rem;
+        margin-top: 3px;
+      }
+
+      /* Voice response adjustments */
       .voice-response {
-        padding: 20px;
-        max-width: 400px;
+        padding: 15px;
+        max-width: 350px;
+        top: 45%;
       }
 
       .response-text {
-        font-size: 1rem;
-        margin-bottom: 10px;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
       }
 
       .response-command {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
       }
 
-      /* Adjust startup screen for landscape */
-      #startup-screen {
-        padding: 20px;
-      }
-
+      /* Startup screen adjustments */
       .startup-text {
-        font-size: 1.8rem;
-        margin-bottom: 15px;
+        font-size: 1.6rem;
+        margin-bottom: 10px;
       }
 
       .loading-bar {
-        width: 250px;
-        margin-top: 15px;
+        width: 200px;
+        height: 4px;
+        margin-top: 10px;
+      }
+
+      .camera-switch {
+        width: 60px;
+        height: 30px;
+        padding: 6px;
+        right: 30px;
+        top: 15px;
+      }
+
+      .camera-icon {
+        font-size: 1rem;
       }
     }
 
@@ -568,6 +683,11 @@
     <!-- Camera Feed -->
     <video id="camera" autoplay playsinline muted></video>
     
+    <!-- Camera Switch Button -->
+    <button class="camera-switch" onclick="switchCamera()" id="camera-switch">
+      <div class="camera-icon">🔄</div>
+    </button>
+
     <!-- HUD Overlay -->
     <div class="hud-overlay">
       <div class="scan-line"></div>
@@ -668,6 +788,7 @@
     let isListening = false;
     let recognition;
     let currentStream;
+    let usingFrontCamera = true;
 
     // Initialize system on load
     window.addEventListener("load", () => {
@@ -747,22 +868,35 @@
     }
 
     // Camera functions
-    function startCamera() {
-      navigator.mediaDevices.getUserMedia({ 
-        video: { 
-          width: { ideal: 1920 },
-          height: { ideal: 1080 }
-        } 
-      })
-      .then(stream => {
+    async function startCamera(forceFront = true) {
+      try {
+        if (currentStream) {
+          currentStream.getTracks().forEach(track => track.stop());
+        }
+
+        const constraints = {
+          video: {
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+            facingMode: forceFront ? "user" : "environment"
+          }
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
         camera.srcObject = stream;
         currentStream = stream;
         camera.style.display = "block";
-      })
-      .catch(err => {
+        usingFrontCamera = forceFront;
+      } catch (err) {
         console.error("Camera error:", err);
         speak("Camera access denied or unavailable.");
-      });
+      }
+    }
+
+    async function switchCamera() {
+      usingFrontCamera = !usingFrontCamera;
+      await startCamera(usingFrontCamera);
+      speak(usingFrontCamera ? "Switching to front camera" : "Switching to back camera");
     }
 
     function stopCamera() {
@@ -776,7 +910,7 @@
     function toggleCamera() {
       cameraEnabled = !cameraEnabled;
       if (cameraEnabled) {
-        startCamera();
+        startCamera(usingFrontCamera);
         speak("Camera view activated. Visual sensors online.");
       } else {
         stopCamera();
@@ -828,7 +962,11 @@
       showVoiceResponse("Processing command...", `"${command}"`);
       
       if (command.includes("toggle camera") || command.includes("camera")) {
-        toggleCamera();
+        if (command.includes("switch") || command.includes("flip")) {
+          switchCamera();
+        } else {
+          toggleCamera();
+        }
       } else if (command.includes("system status") || command.includes("status")) {
         runDiagnostics();
       } else if (command.includes("weather") || command.includes("temperature")) {
