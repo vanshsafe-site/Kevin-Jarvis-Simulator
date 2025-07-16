@@ -359,27 +359,93 @@
     /* Responsive Design */
     @media (max-width: 768px) {
       .top-hud {
-        padding: 0 10px;  /* Reduced from 20px */
+        padding: 0 10px;
         flex-direction: column;
-        gap: 8px;  /* Reduced from 15px */
+        gap: 8px;
         align-items: center;
+        margin-top: 70px;  /* Increased from 30px to 70px */
+        position: relative;
+      }
+
+      .system-status {
+        width: calc(100% + 20px);
+        margin-right: -20px;
+        position: relative;
+        top: 40px;  /* Increased from 30px to 40px */
+      }
+
+      .time-display {
+        position: relative;
+        top: 40px;  /* Increased from 30px to 40px */
+      }
+
+      /* Adjust camera switch to prevent overlap */
+      .camera-switch {
+        transform: scale(0.6);
+        transform-origin: top right;
+        right: 30px;
+        top: 52px;  /* Increased to prevent overlap with top elements */
+      }
+
+      /* Move right panel down to prevent overlap */
+      .right-panel {
+        right: 10px;
+        transform-origin: right center;
+        top: calc(45% + 40px);  /* Adjusted to account for top elements */
       }
 
       .system-status, .time-display {
-        transform: scale(0.6);  /* Changed from 0.5 to make 10% larger */
+        transform: scale(0.6);
         transform-origin: top center;
-        margin: -20% 0;  /* Adjusted margin to compensate for new scale */
+        margin-top: -20%;
+        margin-bottom: -20%;
       }
 
       .status-item {
-        padding: 0 10px;  /* Reduced padding for mobile */
-        font-size: 0.8rem;  /* Slightly smaller font to prevent overflow */
-        white-space: nowrap;  /* Prevent text wrapping */
-        overflow: hidden;  /* Hide overflow */
+        padding: 0 10px 0 10px;
+        font-size: 0.64rem;  /* Reduced by 20% from 0.8rem */
+        white-space: nowrap;
+        overflow: hidden;
       }
 
-      .status-item span {
-        margin-right: 10px;  /* Reduced margin */
+      .current-time {
+        font-size: 1.44rem;  /* Reduced by 20% from 1.8rem */
+      }
+
+      .current-date {
+        font-size: 0.72rem;  /* Reduced by 20% from 0.9rem */
+      }
+
+      .panel-title {
+        font-size: 0.88rem;  /* Reduced by 20% from 1.1rem */
+      }
+
+      .command-item {
+        font-size: 0.6rem;  /* Reduced by 20% from 0.75rem */
+      }
+
+      .weather-temp {
+        font-size: 1.6rem;  /* Reduced by 20% from 2rem */
+      }
+
+      .weather-desc {
+        font-size: 0.72rem;  /* Reduced by 20% from 0.9rem */
+      }
+
+      .response-text {
+        font-size: 0.64rem;  /* Reduced by 20% from 0.8rem */
+      }
+
+      .response-command {
+        font-size: 0.48rem;  /* Reduced by 20% from 0.6rem */
+      }
+
+      .mic-icon {
+        font-size: 1.04rem;  /* Reduced by 20% from 1.3rem */
+      }
+
+      .camera-icon {
+        font-size: 1.04rem;  /* Reduced by 20% from 1.3rem */
       }
 
       .side-panel {
